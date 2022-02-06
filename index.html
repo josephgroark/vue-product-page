@@ -21,21 +21,21 @@
         </div>
         <div class="product info">
           <h1>{{product}}</h1>
-          <p v-if="inventory > 10">In stock</p>
-          <p v-else-if="inventory <= 10 && inventory > 0">Limted stock</p>
-          <p v-else>Out of stock</p>
-          <p v-show="freshToday">Fresh baked</p>
+          <p v-if="inStock">In stock</p>
+          <p v-else="!inStock">Out of stock</p>
           <h2>Ingredients</h2>
           <ul>
             <li v-for="ingredient of ingredients">{{ ingredient }}</li>
-            <div v-for="variety in varieties" :key="variety.id" @mouseover="updateImage(variety.style)"
-              class="color-circle" :style="{backgroundImage: `url(./assets/images/${variety.style}.jpg)`}">
-              {{ variety.name }}
+            <div v-for="(variant, index) in variants" :key="variant.id" @mouseover="updateVariant(index)"
+              class="color-circle" :style="{backgroundImage: `url(${variant.image_small})`}">
+              {{ variant.name }}
             </div>
           </ul>
-          <button class="button" @click="addToCart" :class="{disabledButton: isOutOfStock}" :disabled="isOutOfStock"> Order
+          <button class="button" @click="addToCart" :class="{disabledButton: !inStock}" :disabled="!inStock"> Order
             </button">
-            <button class="button" @click="decreaseCart" v-show="cart > 0">Remove</button>
+            <button class="button" @click="decreaseCart" v-show="cart > 0">
+              Remove
+            </button>
         </div>
       </div>
     </div>

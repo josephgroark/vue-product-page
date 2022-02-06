@@ -1,15 +1,25 @@
 const app = Vue.createApp({
   data() {
     return {
-      product: "Joey's sourbread",
-      image: "./assets/images/boule.jpg",
-      inventory: 0,
       cart: 0,
-      freshToday: true,
+      product: "Joey's sourbread",
+      selectedVariant: 0,
       ingredients: ["Flour", "Water", "Starter", "Salt"],
-      varieties: [
-        { id: 1, style: "boule", name: "Joey's sourbread" },
-        { id: 2, style: "bloomer", name: "San Francisco sourbread" },
+      variants: [
+        {
+          id: 1,
+          name: "Joey's sourbread",
+          image: "./assets/images/boule.jpg",
+          image_small: "./assets/images/boule_small.jpg",
+          quantity: 2,
+        },
+        {
+          id: 2,
+          name: "San Francisco sourbread",
+          image: "./assets/images/bloomer.jpg",
+          image_small: "./assets/images/bloomer_small.jpg",
+          quantity: 0,
+        },
       ],
     };
   },
@@ -20,15 +30,16 @@ const app = Vue.createApp({
     decreaseCart() {
       this.cart -= 1;
     },
-    updateImage(varietyImage) {
-      this.image = `./assets/images/${varietyImage}.jpg`;
+    updateVariant(index) {
+      this.selectedVariant = index;
     },
   },
   computed: {
-    isOutOfStock() {
-      if (this.inventory <= 0) {
-        return true;
-      }
+    image() {
+      return this.variants[this.selectedVariant].image;
+    },
+    inStock() {
+      return this.variants[this.selectedVariant].quantity;
     },
   },
 });
