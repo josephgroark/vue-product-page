@@ -1,23 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Vue Mastery</title>
-    <!-- Import Styles -->
-    <link rel="stylesheet" href="./assets/styles.css" />
-    <!-- Import Vue.js -->
-    <script src="https://unpkg.com/vue@3.0.0-beta.12/dist/vue.global.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <h1>{{ product }}</h1>
-    </div>
 
-    <!-- Import Js -->
-    <script src="./main.js"></script>
-    
-    <script>
-      const mountedApp = app.mount('#app')
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>Vue Mastery</title>
+  <!-- Import Styles -->
+  <link rel="stylesheet" href="./assets/styles.css" />
+  <!-- Import Vue.js -->
+  <script src="https://unpkg.com/vue@3.0.0-beta.12/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div class="nav-bar"></div>
+    <div class="cart">Cart({{cart}})</div>
+    <div class="product-display">
+      <div class="product-container">
+        <div class="product-image">
+          <img :src="image" :alt="product">
+        </div>
+        <div class="product info">
+          <h1>{{product}}</h1>
+          <p v-if="inventory > 10">In stock</p>
+          <p v-else-if="inventory <= 10 && inventory > 0">Limted stock</p>
+          <p v-else>Out of stock</p>
+          <p v-show="freshToday">Fresh baked</p>
+          <h2>Ingredients</h2>
+          <ul>
+            <li v-for="ingredient of ingredients">{{ ingredient }}</li>
+            <div v-for="variety in varieties" :key="variety.id" @mouseover="updateImage(variety.style)"
+              class="color-circle" :style="{backgroundImage: `url(./assets/images/${variety.style}.jpg)`}">
+              {{ variety.name }}
+            </div>
+          </ul>
+          <button class="button" @click="addToCart" :class="{disabledButton: isOutOfStock}" :disabled="isOutOfStock"> Order
+            </button">
+            <button class="button" @click="decreaseCart" v-show="cart > 0">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Js -->
+  <script src="./main.js"></script>
+
+  <script>
+    const mountedApp = app.mount('#app')
+  </script>
+</body>
+
 </html>
